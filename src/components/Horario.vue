@@ -1,9 +1,31 @@
 <template>
-<div>
-  <div>
 
-    <h3>Fecha</h3>
-    <form>
+<div>
+  <div id="form" >
+    
+
+    <h5>Dias</h5>
+    <b-form-select v-model="dias" :options="options" size="sm" class="mt-3"></b-form-select>
+    <br><br>
+    <h5>Horas</h5>
+      <b-form-select v-model="Horas" :options="optionsHoras" size="sm" class="mt-3"></b-form-select>
+          <br><br>
+    <h5>Tipo</h5>
+      <b-form-select v-model="tipo" :options="optionsTipo" size="sm" class="mt-3"></b-form-select>
+    <div class="mt-3">Selected: <strong>{{ dias  }} /{{Horas}}/{{tipo}}</strong></div>
+  </div>  
+
+<div class="md-form">
+  <input placeholder="Selected time" type="text" id="input_starttime" class="form-control timepicker">
+  <label for="input_starttime">Twelve hour clock</label>
+</div>
+
+
+
+
+
+<!--
+     <form>
           <input type="text" 
           class="form-control my-2" 
           placeholder="Ingresa fecha"
@@ -11,6 +33,7 @@
           >
           
       </form>
+
     <div class="form-check form-check-inline">
       <input 
         type="radio"
@@ -84,8 +107,8 @@
   </div>
   <hr>
 
-    <!-- Horarios -->
-    
+   Horarios 
+     </div>
   <div>
     <h3>Hora</h3>
      <div class="form-check form-check-inline">
@@ -229,8 +252,13 @@
     <button type="submit" :disabled="bloquear">
       Procesar
     </button>
+</div>-->
 </div>
 </template>
+
+
+
+
 
 <script>
 export default {
@@ -241,13 +269,64 @@ export default {
       bloquear(){
         return this.tarea.horario.trim() === "" ? true : false
       }
+      },
+      
+          data() {
+      return {
+        dias: null,
+        Horas: null,
+        tipo:null,
+        options: [
+          { value: null, text: 'Selecciona el dia' },
+          { value: 'Lunes', text: 'Lunes' },
+          { value: 'Martes', text: 'Martes' },
+          { value: 'Miercoles', text: 'Miércoles' },
+          { value: 'Jueves', text: 'Jueves' },
+          { value: 'Viernes', text: 'Viernes' },
+          { value: 'Sabado', text: 'Sábado' },
+          { value: 'Domingo', text: 'Domingo' },                    
+          //{ value: { C: '3PO' }, text: 'This is an option with object value' },
+          //{ value: 'd', text: 'This one is disabled', disabled: true }
+        ], 
+        optionsHoras: [
+          { value: null, text: 'Selecciona la hora' },
+          { value: '07:17 AM', text: '07:17 AM' },
+          { value: '08:40 AM', text: '08:40 AM' },
+          { value: '10:00 AM', text: '10:00 AM' },
+          { value: '18:00 PM', text: '18:00 PM' },
+          { value: '19:15 PM', text: '19:15 PM' },
+          { value: '20:30 PM', text: '20:30 PM' },
+                           
+          //{ value: { C: '3PO' }, text: 'This is an option with object value' },
+          //{ value: 'd', text: 'This one is disabled', disabled: true }
+        ],
+         optionsTipo: [
+          { value: null, text: 'Selecciona el tipo de clase' },
+          { value: 'Espalda', text: 'Espalda' },
+          { value: 'Cardio', text: 'Cardio' },
+          { value: 'Piernas', text: 'Piernas' },
+          { value: 'Pecho', text: 'Pecho' },
+          { value: 'A eleccion', text: 'A elección' },
+           ]
       }
-
+    }
 }
 
 </script>
 
+
+
 <style lang="scss" scoped>
+
+div#form{
+margin: auto;
+padding: 50px 25px;
+width: 10;
+height: 10;
+background-color:gray;
+
+
+}
 .blog-card-wrap {
   h3 {
     font-weight: 300;

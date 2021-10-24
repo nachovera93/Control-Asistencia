@@ -1,7 +1,7 @@
 <template>
-<div>
+<div class="Title">
  
- <h1 class="my-5">Horarios y Clases</h1>
+ <h1 class="Title">Horarios y Clases</h1>
   
     <form @submit.prevent="procesarFormulario">    
     <Horario :tarea="tarea" />
@@ -70,3 +70,12 @@ export default {
 },
 }
 </script>
+
+<style lang="scss" scoped>
+
+div#Title{
+  background-color: gray;
+}
+
+
+</style>
