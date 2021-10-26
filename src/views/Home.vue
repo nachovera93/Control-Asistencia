@@ -23,6 +23,8 @@
 import BlogPost from "../components/BlogPost.vue";
 import BlogCard from "../components/BlogCard";
 import Arrow from "../assets/Icons/arrow-right-light.svg";
+
+
 export default {
   name: "Home",
   components: { BlogPost, BlogCard, Arrow },
