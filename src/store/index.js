@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase/app";
+import router from '../router'
 import "firebase/auth";
 import db from "../firebase/firebaseInit";
 
@@ -12,12 +13,12 @@ export default new Vuex.Store({
     tarea: {
       fecha:'',
       id: '',
-      nombre: '',
-      dia:'',
-      horario: '',
+      tipo: '',
+      horas: '',
       cupos: 0,
-      espacio: 0
+      espacio: 0,
     },
+    horarios:[],
     blogPosts: [],
     postLoaded: null,
     blogHTML: "Write your blog title here...",
@@ -76,7 +77,8 @@ export default new Vuex.Store({
     },
     setProfileAdmin(state, payload) {
       state.profileAdmin = payload;
-      console.log(state.profileAdmin);
+     // console.log("profile id : ")
+     // console.log(state.profileAdmin);   True o False
     },
     setProfileInfo(state, doc) {
       state.profileId = doc.id;
@@ -84,7 +86,7 @@ export default new Vuex.Store({
       state.profileFirstName = doc.data().firstName;
       state.profileLastName = doc.data().lastName;
       state.profileUsername = doc.data().username;
-      console.log(state.profileId);
+      //console.log(state.profileId);  id de el usuario
     },
     setProfileInitials(state) {
       state.profileInitials =
@@ -101,14 +103,50 @@ export default new Vuex.Store({
     },
     set(state, payload){
     state.tareas.push(payload)
-    console.log("state tareas: ")
-    console.log(state.tareas)
+   
     },
     eliminar(state,payload){
-      state.tareas=state.tareas.filter(item => item.id !== payload)
+      state.horarios=state.horarios.filter(item => item.id !== payload)
+    },
+    editarClase(state, payload){
+      if (!state.horarios.find(item => item.id === payload)){
+        router.push('/')
+        return
+      }
+      state.tarea = state.horarios.find(item => item.id === payload)
+    },
+    update(state,payload){
+      state.horarios = state.horarios.map(item => item.id === payload.id ? payload : item)
+      router.push('/create-horario')  //para emppujar al usuario a la pagina de crear horario
+    },
+    setHorarios(state,payload){
+      state.horarios.push(payload)
+    },
+    setHorario(state,payload){
+      state.horarios = payload
     }
   },
   actions: {  //las acciones las llamamos de las vistas
+
+    async getHorario({commit}, tar){  
+       // const dataBase2 = await db.collection("Horarios").doc();  //esto integra id
+              
+              const timestamp = await Date.now();
+              const dataBase = await db.collection("Horarios").doc();
+              console.log('Campo vacio2') 
+              await dataBase.set({
+                HorarioID: dataBase.id,
+                fecha: tar.fecha,
+                tipo: tar.tipo,
+                horas: tar.horas,
+                cupos: tar.cupos,
+                espacio: tar.espacio,
+                date: timestamp,
+              });
+         
+        commit("setHorarios", tar);
+    },
+   
     async getCurrentUser({ commit }, user) {
       const dataBase = await db.collection("users").doc(firebase.auth().currentUser.uid);
       const dbResults = await dataBase.get();
@@ -117,6 +155,24 @@ export default new Vuex.Store({
       const token = await user.getIdTokenResult();
       const admin = await token.claims.admin;
       commit("setProfileAdmin", admin);
+      
+ 
+    },
+    async getHorarios({commit}){
+       const horarios = []
+      db.collection("Horarios").get()
+      .then(res => {
+       res.forEach(doc => {
+            let horario = doc.data()
+            horario.id = doc.id
+            console.log(doc.id)
+            horarios.push(horario)
+          })
+         commit("setHorario", horarios);
+        })
+       //state.horarios.push(horario);
+      //console.log("state tareas: ")
+      //console.log(dbResults)
     },
     async getPost({ state }) {
       const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
@@ -159,7 +215,13 @@ export default new Vuex.Store({
     },
     deleteTareas({commit},id){
       commit('eliminar',id)
-    }
+    },
+    editarHorario({commit},id){
+      commit('editarClase',id)
+    },
+    UpdateHorario({commit}, tarea){
+      commit('update', tarea)
+  }
   },
-  modules: {},
-});
+  modules: {}
+})

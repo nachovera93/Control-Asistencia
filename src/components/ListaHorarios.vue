@@ -5,21 +5,29 @@
             <tr>
                 <th scope="col">Fecha</th>
                 <th scope="col">Clase</th>
-                <th scope="col">Dia</th>
                 <th scope="col">Horario</th>
                 <th scope="col">Cupos </th>
                 <th scope="col">Eliminar/Editar</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in tareas" :key="item.id">
+            <tr v-for="item in horarios" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
-                <td>{{item.nombre}}</td>
-                <td>{{item.dia}}</td>
-                <td>{{item.horario}}</td>
+                <td>{{item.tipo}}</td>
+                <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
                         <button @click="deleteTareas(item.id)"> Eliminar </button>
+                        <router-link class="router-button ml-2 btn-warning"
+                        :to="{
+                          name: 'EditarClase',
+                          params:{
+                            claseid: item.id
+                          }
+                          }"
+                        >
+                          Editar
+                        </router-link>
                 </td>
             </tr>
         </tbody>
@@ -29,13 +37,17 @@
 <script>
 import {mapState,mapActions} from 'vuex'
 export default {
+    created(){
+     this.getHorarios()
+    },
     computed:{
-        ...mapState(['tareas'])   
+        ...mapState(['horarios'])   
          },
          methods:{
-             ...mapActions(['deleteTareas'])
-         }
-   
+             ...mapActions(['deleteTareas','getHorarios'])
+         },
+    
+  
 }
 </script>
 

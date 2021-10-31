@@ -13,6 +13,7 @@ import BlogPreview from "../views/BlogPreview.vue";
 import ViewBlog from "../views/ViewBlog.vue";
 import EditBlog from "../views/EditBlog.vue";
 import Horarios from "../views/Horarios.vue";
+import EditarClase from "../views/EditarClase.vue";
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -97,9 +98,9 @@ const routes = [
     name: "CreateHorario",
     component: CreateHorario,
     meta: {
-      title: "Crear Blog",
-    //  requiresAuth: true,
-    //  requiresAdmin: true,
+      title: "Crear Horario",
+      //requiresAuth: true,
+      //requiresAdmin: true,
     },
   },
   {
@@ -108,6 +109,16 @@ const routes = [
     component: CreatePost,
     meta: {
       title: "Crear Post",
+      requiresAuth: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/editar-clase/:claseid",
+    name: "EditarClase",
+    component: EditarClase,
+    meta: {
+      title: "EditarClase",
       requiresAuth: true,
       requiresAdmin: true,
     },

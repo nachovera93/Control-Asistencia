@@ -1,13 +1,20 @@
 <template>
-  <div>
-      Horarios
+  <div class="blog-card-wrap">
+    <div class="blog-cards container">
+        <span>Horarios Semana</span>
+      
+      <TablaHorarios />
+    </div>
   </div>
 </template>
 
-<script>
 
+<script>
+import TablaHorarios from "../components/TablaHorarios";
 export default {
   name: "horarios",
+  components: { TablaHorarios },
+  
   
 };
 </script>
