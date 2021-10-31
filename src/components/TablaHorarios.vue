@@ -7,7 +7,7 @@
                 <th scope="col">Clase</th>
                 <th scope="col">Horario</th>
                 <th scope="col">Cupos </th>
-                <th scope="col">Eliminar/Editar</th>
+                <th scope="col">Tomar Clase</th>
             </tr>
         </thead>
         <tbody>
@@ -17,17 +17,8 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="deleteHorario(item.id)"> Eliminar </button>
-                        <router-link class="router-button ml-2 btn-warning"
-                        :to="{
-                          name: 'EditarClase',
-                          params:{
-                            claseid: item.id
-                          }
-                          }"
-                        >
-                          Editar
-                        </router-link>
+                        <button> Asistir </button>
+                        
                 </td>
             </tr>
         </tbody>
@@ -35,7 +26,7 @@
 </template>
 
 <script>
-import {mapState,mapActions} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 export default {
     created(){
      this.getHorarios()
@@ -43,11 +34,10 @@ export default {
     computed:{
         ...mapState(['horarios'])   
          },
-         methods:{
-             ...mapActions(['deleteHorario','getHorarios'])
-         },
-    
-  
+    methods:{
+       ...mapActions(['getHorarios'])
+    },
+       
 }
 </script>
 

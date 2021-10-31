@@ -6,12 +6,12 @@
           <input type="text" 
           class="form-control my-2" 
           placeholder="Ingresa fecha"
-          v-model.trim="tarea.fecha"
+          v-model.trim="clase.fecha"
           >
       </form>
      <h5>Dias</h5>
       <b-form-select
-        v-model="tarea.dia"
+        v-model="clase.dia"
         :options="options"
         size="sm"
         class="mt-3"
@@ -22,14 +22,14 @@
       
       <div class="row"> 
       <p class="font-weight-bold">Fecha</p>
-      <b-form-datepicker v-model="tarea.fecha" size="sm" ></b-form-datepicker>
+      <b-form-datepicker v-model="clase.fecha" size="sm" ></b-form-datepicker>
 
       <p class="font-weight-bold">Hora</p>
-      <b-form-timepicker v-model="tarea.horas"  size="sm" ></b-form-timepicker>
+      <b-form-timepicker v-model="clase.horas"  size="sm" ></b-form-timepicker>
       </div>
       <p class="font-weight-bold">Tipo</p>
       <b-form-select
-        v-model="tarea.tipo"
+        v-model="clase.tipo"
         :options="optionsTipo"
         size="sm"
         class="mt-3"
@@ -40,7 +40,7 @@
           <input type="text" 
           class="form-control my-2" 
           placeholder="Ingresa los cupos que estarán disponibles"
-          v-model.trim="tarea.cupos"
+          v-model.trim="clase.cupos"
           >
       </form>
        <!--<div class="mt-3">
@@ -69,11 +69,11 @@
 <script>
 export default {
   props: {
-    tarea: Object,
+    clase: Object,
   },
   computed: {
     bloquear() {
-      return this.tarea.cupos === '' ? true : false;
+      return this.clase.cupos === '' ? true : false;
     },
   },
   data() {

@@ -9,8 +9,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    tareas:[],
-    tarea: {
+    //tareas:[],
+    clase: {
       fecha:'',
       id: '',
       tipo: '',
@@ -101,10 +101,10 @@ export default new Vuex.Store({
     changeUsername(state, payload) {
       state.profileUsername = payload;
     },
-    set(state, payload){
-    state.tareas.push(payload)
+    //set(state, payload){
+    //state.horarios.push(payload)
    
-    },
+    //},
     eliminar(state,payload){
       state.horarios=state.horarios.filter(item => item.id !== payload)
     },
@@ -113,22 +113,23 @@ export default new Vuex.Store({
         router.push('/')
         return
       }
-      state.tarea = state.horarios.find(item => item.id === payload)
+      state.clase = state.horarios.find(item => item.id === payload)
     },
     update(state,payload){
       state.horarios = state.horarios.map(item => item.id === payload.id ? payload : item)
       router.push('/create-horario')  //para emppujar al usuario a la pagina de crear horario
     },
-    setHorarios(state,payload){
+    putHorarios(state,payload){
       state.horarios.push(payload)
     },
     setHorario(state,payload){
       state.horarios = payload
     }
   },
+
   actions: {  //las acciones las llamamos de las vistas
 
-    async getHorario({commit}, tar){  
+    async putHorario({commit}, tar){  
        // const dataBase2 = await db.collection("Horarios").doc();  //esto integra id
               
               const timestamp = await Date.now();
@@ -144,7 +145,7 @@ export default new Vuex.Store({
                 date: timestamp,
               });
          
-        commit("setHorarios", tar);
+        commit("putHorarios", tar);
     },
    
     async getCurrentUser({ commit }, user) {
@@ -159,7 +160,7 @@ export default new Vuex.Store({
  
     },
     async getHorarios({commit}){
-       const horarios = []
+      const horarios = []
       db.collection("Horarios").get()
       .then(res => {
        res.forEach(doc => {
@@ -210,17 +211,17 @@ export default new Vuex.Store({
       });
       commit("setProfileInitials");
     },
-    setTareas({commit},tarea){
-      commit('set',tarea)
-    },
-    deleteTareas({commit},id){
+    //setHorario({commit},clase){
+    //  commit('set',clase)
+    //},
+    deleteHorario({commit},id){
       commit('eliminar',id)
     },
     editarHorario({commit},id){
       commit('editarClase',id)
     },
-    UpdateHorario({commit}, tarea){
-      commit('update', tarea)
+    UpdateHorario({commit}, clase){
+      commit('update', clase)
   }
   },
   modules: {}

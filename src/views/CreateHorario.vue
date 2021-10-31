@@ -4,11 +4,11 @@
     <h1 class="Title">Horarios y Clases</h1>
 
     <form @submit.prevent="procesarFormulario">
-      <Horario :tarea="tarea" />
+      <Horario :clase="clase" />
     </form>
     <br />
     <hr />
-    {{ tarea }}
+    {{ clase }}
    <br />
     <br />
     <hr />
@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      tarea: {
+      clase: {
         fecha:'',
         id: '',
         tipo: '',
@@ -49,20 +49,19 @@ export default {
  
 
   methods: {
-    ...mapActions(["setTareas","getHorario"]),
+    ...mapActions(["putHorario"]),
 
     procesarFormulario() {
      
-      this.tarea.id = shortid.generate();
-      this.getHorario(this.tarea)
-      this.setTareas(this.tarea);
+      this.clase.id = shortid.generate();
+      this.putHorario(this.clase)
+     
         
-      this.tarea = {
+      this.clase = {
         fecha: "",
         id: "",
         tipo: "",
-        dia: "",
-        horario: "",
+        horas: "",
         cupos: 0,
         espacio: 0,
       };
