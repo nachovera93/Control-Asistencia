@@ -1,81 +1,77 @@
 <template>
-<div class="Title">
- 
- <h1 class="Title">Horarios y Clases</h1>
-  
-    <form @submit.prevent="procesarFormulario">    
-    <Horario :tarea="tarea" />
+  <div class="Title">
+
+    <h1 class="Title">Horarios y Clases</h1>
+
+    <form @submit.prevent="procesarFormulario">
+      <Horario :clase="clase" />
     </form>
-    <br>
-    <hr>
-    {{tarea}}
-    <br>
-     <hr>
-     <br>
+    <br />
+    <hr />
+    {{ clase }}
+   <br />
+    <br />
+    <hr />
+    <br />
     <ListaHorarios />
     
-</div>
-  
- 
+  </div>
 </template>
 
-
 <script>
-import Horario from '../components/Horario.vue'
-import ListaHorarios from '../components/ListaHorarios.vue'
-import {mapActions} from 'vuex'
-const shortid = require('shortid');
+import Horario from "../components/Horario.vue";
+import ListaHorarios from "../components/ListaHorarios.vue";
+import { mapActions } from "vuex";
+const shortid = require("shortid");
+//import firebase from "firebase/app";
+import "firebase/storage";
+//import db from "../firebase/firebaseInit";
+
 
 export default {
-  name: 'Home',
+  name: "CreateHorario",
   components: {
-    Horario, ListaHorarios
+    Horario,
+    ListaHorarios,
   },
   data() {
     return {
-       tarea: {
-      fecha:'',
-      id: '',
-      nombre: '',
-      dia:'',
-      horario: '',
-      cupos: 0,
-      espacio: 0
-    },
-    }
+      clase: {
+        fecha:'',
+        id: '',
+        tipo: '',
+        horas: '',
+        cupos: 0,
+        espacio: 0,
+      },
+    };
   },
-   methods:{
-     ...mapActions(['setTareas']),
-      procesarFormulario(){
-        //console.log(this.tarea)
-        //if(this.tarea.fecha.trim()==""){
-        //  console.log('Campo vacio')
-         // return
-        //}
+ 
 
-        this.tarea.id = shortid.generate()
+  methods: {
+    ...mapActions(["putHorario"]),
 
-        this.setTareas(this.tarea)
-        this.tarea={
-          fecha:'',
-          id: '',
-          nombre: '',
-          dia:'',
-          horario: '',
-          cupos: 0,
-          espacio: 0
-            }
-      }
-   
-},
-}
+    procesarFormulario() {
+     
+      this.clase.id = shortid.generate();
+      this.putHorario(this.clase)
+     
+        
+      this.clase = {
+        fecha: "",
+        id: "",
+        tipo: "",
+        horas: "",
+        cupos: 0,
+        espacio: 0,
+      };
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
-div#Title{
+div#Title {
   background-color: gray;
 }
-
-
 </style>
