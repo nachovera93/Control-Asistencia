@@ -5,6 +5,7 @@ import router from '../router'
 import "firebase/auth";
 import db from "../firebase/firebaseInit";
 
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -17,6 +18,7 @@ export default new Vuex.Store({
       horas: '',
       cupos: 0,
       espacio: 0,
+      alumnos:[],
     },
     horarios:[],
     blogPosts: [],
@@ -77,8 +79,8 @@ export default new Vuex.Store({
     },
     setProfileAdmin(state, payload) {
       state.profileAdmin = payload;
-     // console.log("profile id : ")
-     // console.log(state.profileAdmin);   True o False
+      console.log("profile id : ");
+      console.log(state.profileAdmin);   //True o False
     },
     setProfileInfo(state, doc) {
       state.profileId = doc.id;
@@ -86,7 +88,7 @@ export default new Vuex.Store({
       state.profileFirstName = doc.data().firstName;
       state.profileLastName = doc.data().lastName;
       state.profileUsername = doc.data().username;
-      //console.log(state.profileId);  id de el usuario
+      console.log(state.profileId); // id de el usuario
     },
     setProfileInitials(state) {
       state.profileInitials =
@@ -110,21 +112,32 @@ export default new Vuex.Store({
     },
     editarClase(state, payload){
       if (!state.horarios.find(item => item.id === payload)){
-        router.push('/')
+        router.push('/horario')
         return
       }
       state.clase = state.horarios.find(item => item.id === payload)
     },
     update(state,payload){
       state.horarios = state.horarios.map(item => item.id === payload.id ? payload : item)
-      router.push('/create-horario')  //para emppujar al usuario a la pagina de crear horario
+      router.push('/horarios')  //para emppujar al usuario a la pagina de crear horario
     },
     putHorarios(state,payload){
       state.horarios.push(payload)
     },
     setHorario(state,payload){
       state.horarios = payload
-    }
+    },
+    updateClase(state,payload){
+      state.clase.alumnos.push(payload)
+      state.clase.espacio++
+      console.log("alumnos: ",state.clase.espacio); 
+    },
+    sacarClase(state,payload){
+      state.clase.alumnos = state.clase.alumnos.filter(item => item.id !== payload)
+      state.clase.espacio--
+      console.log("alumnos: ",state.clase.espacio); 
+    },
+   
   },
 
   actions: {  //las acciones las llamamos de las vistas
@@ -142,6 +155,7 @@ export default new Vuex.Store({
                 horas: tar.horas,
                 cupos: tar.cupos,
                 espacio: tar.espacio,
+                alumnos: [],
                 date: timestamp,
               });
          
@@ -166,15 +180,65 @@ export default new Vuex.Store({
        res.forEach(doc => {
             let horario = doc.data()
             horario.id = doc.id
-            console.log(doc.id)
+            //console.log(doc.id)
             horarios.push(horario)
           })
          commit("setHorario", horarios);
-        })
-       //state.horarios.push(horario);
-      //console.log("state tareas: ")
-      //console.log(dbResults)
+        }) 
     },
+
+    
+    async editarClase({commit},id){
+     commit('editarClase',id)
+    },
+    
+    async TomarClase({commit},id){
+         const dataBase = await db.collection("Horarios").doc(id);
+         console.log("id", id)
+         dataBase.update({
+           alumnos: firebase.firestore.FieldValue.arrayUnion(id),
+           espacio: firebase.firestore.FieldValue.increment(1)
+
+      });
+
+        commit("updateClase", id);
+      },
+
+    async DescartarClase({commit},id){
+         const dataBase = await db.collection("Horarios").doc(id);
+         console.log("id2", id)
+         dataBase.update({
+           alumnos: firebase.firestore.FieldValue.arrayRemove(id),
+           espacio: firebase.firestore.FieldValue.increment(-1)
+
+      });
+        commit("sacarClase", id);
+      },
+
+
+
+    async deleteHorario({commit},id){
+      await db.collection("Horarios").doc(id).delete()
+      //await dataBase.delete(
+      commit('eliminar',id)
+    },
+    async UpdateClase({commit}, clase){
+      const timestamp = await Date.now();
+      const dataBase = await db.collection("Horarios").doc(clase.id)
+      console.log(clase.id)
+      await dataBase.update({
+                HorarioID: dataBase.id,
+                fecha: clase.fecha,
+                tipo: clase.tipo,
+                horas: clase.horas,
+                cupos: clase.cupos,
+                espacio: clase.espacio,
+                date: timestamp,
+              });
+      
+      commit('update', clase)
+    },
+
     async getPost({ state }) {
       const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
       const dbResults = await dataBase.get();
@@ -211,18 +275,7 @@ export default new Vuex.Store({
       });
       commit("setProfileInitials");
     },
-    //setHorario({commit},clase){
-    //  commit('set',clase)
-    //},
-    deleteHorario({commit},id){
-      commit('eliminar',id)
-    },
-    editarHorario({commit},id){
-      commit('editarClase',id)
-    },
-    UpdateHorario({commit}, clase){
-      commit('update', clase)
-  }
+    
   },
   modules: {}
 })

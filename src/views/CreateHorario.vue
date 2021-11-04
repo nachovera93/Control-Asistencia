@@ -13,14 +13,14 @@
     <br />
     <hr />
     <br />
-    <ListaHorarios />
+    <TablaHorarios />
     
   </div>
 </template>
 
 <script>
 import Horario from "../components/Horario.vue";
-import ListaHorarios from "../components/ListaHorarios.vue";
+import TablaHorarios from "../components/TablaHorarios.vue";
 import { mapActions } from "vuex";
 const shortid = require("shortid");
 //import firebase from "firebase/app";
@@ -29,10 +29,10 @@ import "firebase/storage";
 
 
 export default {
-  name: "CreateHorario",
+  name: "ListaHorarios",
   components: {
     Horario,
-    ListaHorarios,
+    TablaHorarios,
   },
   data() {
     return {
@@ -43,6 +43,7 @@ export default {
         horas: '',
         cupos: 0,
         espacio: 0,
+        alumnos:[],
       },
     };
   },
@@ -64,6 +65,7 @@ export default {
         horas: "",
         cupos: 0,
         espacio: 0,
+        alumnos:[],
       };
     },
   },

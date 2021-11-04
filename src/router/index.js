@@ -44,7 +44,7 @@ const routes = [
     component: Horarios,
     meta: {
       title: "Horarios",
-      requiresAuth: false,
+      requiresAuth: true,
     },
   },
   {
@@ -89,8 +89,8 @@ const routes = [
     component: Admin,
     meta: {
       title: "Admin",
-    //  requiresAuth: true,
-    //  requiresAdmin: true,
+      //requiresAuth: true,
+      //requiresAdmin: true,
     },
   },
   {

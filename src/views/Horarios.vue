@@ -1,8 +1,8 @@
 <template>
   <div class="blog-card-wrap">
     <div class="blog-cards container">
-        <span>Horarios Semana</span>
-      
+        <H1>Horarios Semana</H1>
+      {{clase}}
       <TablaHorarios />
     </div>
   </div>

@@ -1,11 +1,11 @@
 <template>
 <div>
     Editar {{$route.params.claseid}} - {{clase}}
-  <form @submit.prevent="UpdateHorario(tarea)">
+  <form @submit.prevent="UpdateClase(clase)">
        <Horario :clase="clase" />
   </form>
   <br>
-  {{clase}}
+ 
   <br>
 </div>
    
@@ -23,10 +23,10 @@ export default {
     ...mapState(['clase'])
   },
   methods:{
-    ...mapActions(['editarHorario', 'UpdateHorario'])
+    ...mapActions(['editarClase', 'UpdateClase'])
   },
   created(){
-    this.editarHorario(this.$route.params.claseid)  //aqui se manda la id de la url hacia la tienda
+    this.editarClase(this.$route.params.claseid)  //aqui se manda la id de la url hacia la tienda
   }
 
 }

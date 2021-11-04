@@ -1,5 +1,5 @@
 <template>
-    <!-- {{horarios}} -->
+      
     <table class="table">
         <thead>
             <tr>
@@ -17,9 +17,26 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button> Asistir </button>
+                        <button @click="TomarClase(item.id)"> Asistir </button>
+                        <button @click="DescartarClase(item.id)"> No Asistir </button>
                         
                 </td>
+                <td v-if="profileAdmin">
+                        <button @click="deleteHorario(item.id)"> Eliminar </button>
+                 </td>
+                 <td v-if="profileAdmin">
+                       <router-link class="router-button ml-2 btn-warning"
+                           :to="{
+                            name: 'EditarClase',
+                           params:{
+                            claseid: item.id
+                          }
+                          }"
+                        >
+                          Editar
+                        </router-link>
+                </td>
+                
             </tr>
         </tbody>
     </table>
@@ -32,10 +49,17 @@ export default {
      this.getHorarios()
     },
     computed:{
-        ...mapState(['horarios'])   
+     ...mapState(['horarios','clase']),
+     
+     profileAdmin() {
+      return this.$store.state.profileAdmin;   
          },
+     profileUser(){
+      return this.$store.state.profileId;   
+         },
+    },
     methods:{
-       ...mapActions(['getHorarios'])
+      ...mapActions(['deleteHorario','getHorarios','TomarClase','DescartarClase'])
     },
        
 }
