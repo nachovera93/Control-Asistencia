@@ -2,7 +2,7 @@
   <div class="blog-card-wrap">
     <div class="blog-cards container">
         <H1>Horarios Semana</H1>
-      {{clase}}
+     
       <TablaHorarios />
     </div>
   </div>

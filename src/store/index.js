@@ -79,8 +79,8 @@ export default new Vuex.Store({
     },
     setProfileAdmin(state, payload) {
       state.profileAdmin = payload;
-      console.log("profile id : ");
-      console.log(state.profileAdmin);   //True o False
+     //console.log("profile id : ");
+     // console.log(state.profileAdmin);   //True o False
     },
     setProfileInfo(state, doc) {
       state.profileId = doc.id;
@@ -88,7 +88,7 @@ export default new Vuex.Store({
       state.profileFirstName = doc.data().firstName;
       state.profileLastName = doc.data().lastName;
       state.profileUsername = doc.data().username;
-      console.log(state.profileId); // id de el usuario
+      console.log("id user: ",state.profileId); // id de el usuario
     },
     setProfileInitials(state) {
       state.profileInitials =
@@ -192,27 +192,32 @@ export default new Vuex.Store({
      commit('editarClase',id)
     },
     
-    async TomarClase({commit},id){
+    async TomarClase({commit},{id,userid,username,userlast}){
          const dataBase = await db.collection("Horarios").doc(id);
-         console.log("id", id)
+         console.log("usres", userid)
+         console.log("name", username)
+         console.log("lastname", userlast)
+         //const datos=[]
          dataBase.update({
-           alumnos: firebase.firestore.FieldValue.arrayUnion(id),
+           alumnos: firebase.firestore.FieldValue.arrayUnion({id : userid, name : username, apellido: userlast}),
            espacio: firebase.firestore.FieldValue.increment(1)
 
       });
 
-        commit("updateClase", id);
+        commit("updateClase", userid);
       },
 
-    async DescartarClase({commit},id){
+    async DescartarClase({commit},{id,userid,username,userlast}){
          const dataBase = await db.collection("Horarios").doc(id);
-         console.log("id2", id)
+         //console.log("id2", id)
+         console.log("name", username)
+         console.log("lastname", userlast)
          dataBase.update({
-           alumnos: firebase.firestore.FieldValue.arrayRemove(id),
+           alumnos: firebase.firestore.FieldValue.arrayRemove({id : userid, name : username, apellido: userlast}),
            espacio: firebase.firestore.FieldValue.increment(-1)
 
       });
-        commit("sacarClase", id);
+        commit("sacarClase", userid);
       },
 
 

@@ -17,8 +17,8 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="TomarClase(item.id)"> Asistir </button>
-                        <button @click="DescartarClase(item.id)"> No Asistir </button>
+                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast })"> Asistir </button>
+                        <button @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast })"> No Asistir </button>
                         
                 </td>
                 <td v-if="profileAdmin">
@@ -45,6 +45,7 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 export default {
+    
     created(){
      this.getHorarios()
     },
@@ -55,11 +56,18 @@ export default {
       return this.$store.state.profileAdmin;   
          },
      profileUser(){
-      return this.$store.state.profileId;   
+      return this.$store.state.profileId;  
          },
+     profileName(){
+           return this.$store.state.profileFirstName;
+        },
+     profileLast(){
+           return this.$store.state.profileLastName;
+        }
     },
     methods:{
       ...mapActions(['deleteHorario','getHorarios','TomarClase','DescartarClase'])
+      
     },
        
 }
