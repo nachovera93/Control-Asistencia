@@ -128,16 +128,24 @@ export default new Vuex.Store({
       state.horarios = payload
     },
     updateClase(state,payload){
-      state.clase.alumnos.push(payload)
-      state.clase.espacio++
-      console.log("alumnos: ",state.clase.espacio); 
+      state.clase = state.horarios.find(item => item.id === payload.id)
+      state.clase.alumnos.push(payload.userid)
+      state.clase.espacio = payload.espacio + 1
+      console.log("id clase: ",state.clase.espacio); 
+      console.log("id alumno: ",payload.userid);
     },
     sacarClase(state,payload){
-      state.clase.alumnos = state.clase.alumnos.filter(item => item.id !== payload)
-      state.clase.espacio--
-      console.log("alumnos: ",state.clase.espacio); 
+      state.clase = state.horarios.find(item => item.id === payload.id)
+      state.clase.alumnos.filter(item => item.id !== payload.userid)
+      state.clase.espacio = payload.espacio - 1
+      console.log("id clase: ",state.clase); 
+      console.log("id alumno: ",payload.userid);
+    }, 
+    INSERT_ERROR(state, error){
+        state.errors.push(error)
+        console.log("error: ",error);
     },
-   
+    
   },
 
   actions: {  //las acciones las llamamos de las vistas
@@ -192,32 +200,44 @@ export default new Vuex.Store({
      commit('editarClase',id)
     },
     
-    async TomarClase({commit},{id,userid,username,userlast}){
+    
+    async TomarClase({commit},{id,userid,username,userlast,espacio}){
+         const espa = espacio;
          const dataBase = await db.collection("Horarios").doc(id);
-         console.log("usres", userid)
-         console.log("name", username)
-         console.log("lastname", userlast)
+         //console.log("usres", userid)
+         //console.log("name", username)
+         //console.log("lastname", userlast)
          //const datos=[]
-         dataBase.update({
+         
+         await dataBase.update({
            alumnos: firebase.firestore.FieldValue.arrayUnion({id : userid, name : username, apellido: userlast}),
-           espacio: firebase.firestore.FieldValue.increment(1)
-
-      });
-
-        commit("updateClase", userid);
+           espacio: firebase.firestore.FieldValue.increment(1),
+           //console.log("espacio1", espacio) 
+         });
+        if(espa == espacio){
+        commit("updateClase",  {id,userid,espacio}),
+          console.log("espacio3 ", espacio)
+          console.log("espacio-nada ", espa)
+        }
+        
       },
 
-    async DescartarClase({commit},{id,userid,username,userlast}){
+    async DescartarClase({commit},{id,userid,username,userlast,espacio}){
+         const espa = espacio;
          const dataBase = await db.collection("Horarios").doc(id);
          //console.log("id2", id)
-         console.log("name", username)
-         console.log("lastname", userlast)
-         dataBase.update({
+         //console.log("name", username)
+         //console.log("lastname", userlast)
+         await dataBase.update({
            alumnos: firebase.firestore.FieldValue.arrayRemove({id : userid, name : username, apellido: userlast}),
-           espacio: firebase.firestore.FieldValue.increment(-1)
-
+           espacio: firebase.firestore.FieldValue.increment(-1),
+           //console.log("espacio2 ", espacio),
       });
-        commit("sacarClase", userid);
+        if(espa == espacio){
+        commit("sacarClase", {id,userid,espacio}),
+        console.log("espacio4 ", espacio)
+        console.log("espacio-nada ", espa)
+        }
       },
 
 
@@ -242,6 +262,7 @@ export default new Vuex.Store({
               });
       
       commit('update', clase)
+        
     },
 
     async getPost({ state }) {

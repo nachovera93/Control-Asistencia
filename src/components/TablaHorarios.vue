@@ -17,8 +17,8 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast })"> Asistir </button>
-                        <button @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast })"> No Asistir </button>
+                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast , espacio: item.espacio})"> Asistir </button>
+                        <button @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast, espacio: item.espacio })"> No Asistir </button>
                         
                 </td>
                 <td v-if="profileAdmin">
@@ -59,14 +59,15 @@ export default {
       return this.$store.state.profileId;  
          },
      profileName(){
-           return this.$store.state.profileFirstName;
+      return this.$store.state.profileFirstName;
         },
      profileLast(){
-           return this.$store.state.profileLastName;
+      return this.$store.state.profileLastName;
         }
     },
     methods:{
       ...mapActions(['deleteHorario','getHorarios','TomarClase','DescartarClase'])
+     
       
     },
        
