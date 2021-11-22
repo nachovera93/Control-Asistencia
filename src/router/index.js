@@ -14,6 +14,8 @@ import ViewBlog from "../views/ViewBlog.vue";
 import EditBlog from "../views/EditBlog.vue";
 import Horarios from "../views/Horarios.vue";
 import EditarClase from "../views/EditarClase.vue";
+import Avances from "../views/Avances.vue";
+import Alumnos from "../views/Alumnos.vue";
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -45,6 +47,25 @@ const routes = [
     meta: {
       title: "Horarios",
       requiresAuth: true,
+    },
+  },
+  {
+    path: "/avances/:alumnoid",
+    name: "Avances",
+    component: Avances,
+    meta: {
+      title: "Avances",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/alumnos",
+    name: "Alumnos",
+    component: Alumnos,
+    meta: {
+      title: "Alumnos",
+      requiresAuth: true,
+      requiresAdmin: true,
     },
   },
   {
@@ -89,8 +110,8 @@ const routes = [
     component: Admin,
     meta: {
       title: "Admin",
-      //requiresAuth: true,
-      //requiresAdmin: true,
+      requiresAuth: true,
+      requiresAdmin: true,
     },
   },
   {
@@ -99,8 +120,8 @@ const routes = [
     component: CreateHorario,
     meta: {
       title: "Crear Horario",
-      //requiresAuth: true,
-      //requiresAdmin: true,
+      requiresAuth: true,
+      requiresAdmin: true,
     },
   },
   {

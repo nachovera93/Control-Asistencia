@@ -12,6 +12,18 @@
            <router-link v-if="admin" class="link" :to="{ name: 'CreateHorario' }">Crear Horario</router-link>
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
           <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
+          <router-link v-if="admin" class="link" :to="{ name: 'Alumnos' }">Alumnos</router-link>
+       <!--   <router-link v-if="admin" class="link" :to="{ name: 'Avances' }">Avances</router-link> -->
+          <router-link v-if="user" class="link"
+                           :to="{
+                            name: 'Avances',
+                             params:{
+                            alumnoid:  this.$store.state.profileId
+                          }
+                          }"
+                          >
+                          Avances
+               </router-link>
         </ul>
         <div v-if="user" :class="{ 'mobile-user-menu': mobile }" @click="toggleProfileMenu" class="profile" ref="profile">
           <span>{{ this.$store.state.profileInitials }}</span>

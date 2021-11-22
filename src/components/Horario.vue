@@ -18,8 +18,7 @@
       ></b-form-select>
       <br /><br />
       <h5>Horas</h5> -->
- 
-      
+
       <div class="row"> 
       <p class="font-weight-bold">Fecha</p>
       <b-form-datepicker v-model="clase.fecha" size="sm" ></b-form-datepicker>
@@ -27,6 +26,8 @@
       <p class="font-weight-bold">Hora</p>
       <b-form-timepicker v-model="clase.horas"  size="sm" ></b-form-timepicker>
       </div>
+
+      
       <p class="font-weight-bold">Tipo</p>
       <b-form-select
         v-model="clase.tipo"

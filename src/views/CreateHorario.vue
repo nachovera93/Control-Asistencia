@@ -8,18 +8,19 @@
     </form>
     <br />
     <hr />
-    {{ clase }}
    <br />
     <br />
     <hr />
-    <br />
     <TablaHorarios />
+    <br />
+    
     
   </div>
 </template>
 
 <script>
 import Horario from "../components/Horario.vue";
+//import TablaHorarios from "../components/TablaHorarios.vue";
 import TablaHorarios from "../components/TablaHorarios.vue";
 import { mapActions } from "vuex";
 const shortid = require("shortid");
@@ -29,10 +30,11 @@ import "firebase/storage";
 
 
 export default {
-  name: "ListaHorarios",
+  name: "CreateHorarios",
   components: {
     Horario,
-    TablaHorarios,
+    //TablaHorarios,
+    TablaHorarios
   },
   data() {
     return {
@@ -50,14 +52,15 @@ export default {
  
 
   methods: {
-    ...mapActions(["putHorario"]),
+    ...mapActions(["PutHorario"]),
 
     procesarFormulario() {
      
       this.clase.id = shortid.generate();
-      this.putHorario(this.clase)
-     
-        
+      this.PutHorario(this.clase);
+       console.log("tar1 :", this.clase)
+      //this.historialHorario(this.clase);
+      //this.getClase(this.clase);
       this.clase = {
         fecha: "",
         id: "",

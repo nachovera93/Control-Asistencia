@@ -1,5 +1,6 @@
 <template>
-      
+     <div>
+    
     <table class="table">
         <thead>
             <tr>
@@ -17,8 +18,8 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast , espacio: item.espacio})"> Asistir </button>
-                        <button @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast, espacio: item.espacio })"> No Asistir </button>
+                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast , espacio: item.espacio})" v-if="!clase.boton"> Asistir </button>
+                        <button  @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast, espacio: item.espacio })" v-else> No Asistir </button>
                         
                 </td>
                 <td v-if="profileAdmin">
@@ -36,22 +37,28 @@
                           Editar
                         </router-link>
                 </td>
-                
             </tr>
         </tbody>
     </table>
+   </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
 export default {
-    
+   // data () {
+   // return {
+   //   activada : this.boton
+   //   }
+   // },
     created(){
-     this.getHorarios()
+     this.getHorarioSemana(),
+     this.getBoton()
+     //console.log("item id:", this.horarios);
     },
     computed:{
-     ...mapState(['horarios','clase']),
-     
+     ...mapState(['horarios','clase','clase.boton']),
+   
      profileAdmin() {
       return this.$store.state.profileAdmin;   
          },
@@ -66,8 +73,13 @@ export default {
         }
     },
     methods:{
-      ...mapActions(['deleteHorario','getHorarios','TomarClase','DescartarClase'])
-     
+      ...mapActions(['deleteHorario','getHorarioSemana','TomarClase','DescartarClase','getBoton']),
+     // cambiarEstado(){
+     // 
+     // this.activada = !this.activada;
+     // console.log("item idsss:", this.boton);
+    //},
+      
       
     },
        

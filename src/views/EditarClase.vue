@@ -1,6 +1,6 @@
 <template>
 <div>
-    Editar {{$route.params.claseid}} - {{clase}}
+    <!-- Editar {{$route.params.claseid}} - {{clase}} -->
   <form @submit.prevent="UpdateClase(clase)">
        <Horario :clase="clase" />
   </form>
