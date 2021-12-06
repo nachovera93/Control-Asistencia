@@ -8,19 +8,20 @@
     </form>
     <br />
     <hr />
-    {{ clase }}
    <br />
     <br />
     <hr />
+    <TablaHorarios />
     <br />
-    <ListaHorarios />
+    <Historial />
     
   </div>
 </template>
 
 <script>
 import Horario from "../components/Horario.vue";
-import ListaHorarios from "../components/ListaHorarios.vue";
+import Historial from "../components/Historial.vue";
+import TablaHorarios from "../components/TablaHorarios.vue";
 import { mapActions } from "vuex";
 const shortid = require("shortid");
 //import firebase from "firebase/app";
@@ -29,10 +30,10 @@ import "firebase/storage";
 
 
 export default {
-  name: "CreateHorario",
+  name: "CreateHorarios",
   components: {
     Horario,
-    ListaHorarios,
+    TablaHorarios, Historial
   },
   data() {
     return {
@@ -43,20 +44,24 @@ export default {
         horas: '',
         cupos: 0,
         espacio: 0,
+        alumnos:[],
+        historial: false,
+        boton: false
       },
     };
   },
  
 
   methods: {
-    ...mapActions(["putHorario"]),
+    ...mapActions(["PutHorario"]),
 
     procesarFormulario() {
      
       this.clase.id = shortid.generate();
-      this.putHorario(this.clase)
-     
-        
+      this.PutHorario(this.clase);
+      // console.log("tar1 :", this.clase)
+      //this.historialHorario(this.clase);
+      //this.getClase(this.clase);
       this.clase = {
         fecha: "",
         id: "",
@@ -64,6 +69,9 @@ export default {
         horas: "",
         cupos: 0,
         espacio: 0,
+        alumnos:[],
+        historial: false,
+        boton: false
       };
     },
   },

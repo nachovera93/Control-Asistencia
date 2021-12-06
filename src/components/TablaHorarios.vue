@@ -1,5 +1,6 @@
 <template>
-    <!-- {{horarios}} -->
+     <div>
+     <H3>Horarios Semana</H3>
     <table class="table">
         <thead>
             <tr>
@@ -7,35 +8,97 @@
                 <th scope="col">Clase</th>
                 <th scope="col">Horario</th>
                 <th scope="col">Cupos </th>
+                <th v-if="profileAdmin" scope="col">Alumnos </th>
                 <th scope="col">Tomar Clase</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in horarios" :key="item.id">
+            <tr v-for="item in Horarios" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
+                <td v-if="profileAdmin" >
+                   <li v-for="element in item.alumnos" :key="element.id">
+                     {{element.name}} {{element.apellido}}
+                   </li>
+                </td> 
                 <td>
-                        <button> Asistir </button>
-                        
+                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast , espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </button>
+                  <!--      <button  @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast, espacio: item.espacio })" v-else> no asistir </button>
+                       </tr>--> 
+                </td>
+                <td v-if="profileAdmin">
+                        <button @click="deleteHorario(item.id)"> Eliminar </button>
+                 </td>
+                 <td v-if="profileAdmin">
+                       <router-link class="router-button ml-2 btn-warning"
+                           :to="{
+                            name: 'EditarClase',
+                           params:{
+                            claseid: item.id
+                          }
+                          }"
+                        >
+                          Editar
+                        </router-link>
+                </td>
+                <td>
+                     <button @click="AddToHistorial(item)">A Historial</button>
                 </td>
             </tr>
+          <!--   <tr>
+                <td  v-for="item in horarios" :key="item.id">
+                        <button @click="AddToHistorial(item)" >Hola</button>
+                       <button @click="deleteHorarioHistorial(item)" v-else>{{BotonHistorial}}</button>
+                        v-if="!item.botonHistorial" v-else
+                 </td>
+             </tr>-->
         </tbody>
     </table>
+   </div>
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
+import { mapActions} from 'vuex'
 export default {
-    created(){
-     this.getHorarios()
+
+    async created(){
+     try {
+      await this.$store.dispatch("getHorarioSemana");
+     } catch (error) {
+      console.error(error);
+     }
+     //this.getBoton()
     },
     computed:{
-        ...mapState(['horarios'])   
+     //...mapState(['clase','clase.boton','profileId']),
+      Horarios(){
+      return this.$store.getters.horariosNoHistorial;
+      },
+      HorarioNoTomado(){
+      return this.$store.getters.HorarioNoTomado;
+      },
+      profileAdmin() {
+      return this.$store.state.profileAdmin;   
+       },
+     profileUser(){
+      return this.$store.state.profileId;  
          },
+     profileName(){
+      return this.$store.state.profileFirstName;
+        },
+     profileLast(){
+      return this.$store.state.profileLastName;
+        }
+    },
     methods:{
-       ...mapActions(['getHorarios'])
+      ...mapActions(['deleteHorario','getPrivilegios','TomarClase','DescartarClase','getBoton']),  
+      
+      AddToHistorial(item) {
+      this.$store.dispatch("putHistorial", item);
+      }     
+     
     },
        
 }

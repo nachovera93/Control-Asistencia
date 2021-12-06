@@ -1,5 +1,6 @@
 <template>
-    <!-- {{horarios}} -->
+    <div>
+     {{clasesCreadas}}
     <table class="table">
         <thead>
             <tr>
@@ -11,13 +12,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in horarios" :key="item.id">
+            <tr v-for="item in clasesCreadas" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="deleteHorario(item.id)"> Eliminar </button>
+                     <!--   <button @click="deleteClase(item.id)"> Eliminar </button>
                         <router-link class="router-button ml-2 btn-warning"
                         :to="{
                           name: 'EditarClase',
@@ -27,27 +28,34 @@
                           }"
                         >
                           Editar
-                        </router-link>
+                        </router-link>-->
                 </td>
             </tr>
         </tbody>
     </table>
+    
+  <!--  <button @click="CrearSemana"> Crear Nueva Semana </button>-->
+   </div>
 </template>
-
+s
 <script>
 import {mapState,mapActions} from 'vuex'
 export default {
     created(){
-     this.getHorarios()
+     //this.getClase()
+     
     },
     computed:{
-        ...mapState(['horarios'])   
+        ...mapState(['clasesCreadas'])   
          },
          methods:{
-             ...mapActions(['deleteHorario','getHorarios'])
-         },
+             ...mapActions(['deleteClase']),
+
+       //  CrearSemana() {
+       //    this.PutHorario(this.clasesCreadas)
+       //  },
     
-  
+},  
 }
 </script>
 

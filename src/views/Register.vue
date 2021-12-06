@@ -81,6 +81,7 @@ export default {
           lastName: this.lastName,
           username: this.username,
           email: this.email,
+          privilegios : false
         });
         this.$router.push({ name: "Home" });
         return;
