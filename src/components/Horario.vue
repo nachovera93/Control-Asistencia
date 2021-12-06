@@ -22,6 +22,9 @@
       <div class="row"> 
       <p class="font-weight-bold">Fecha</p>
       <b-form-datepicker v-model="clase.fecha" size="sm" ></b-form-datepicker>
+    
+      <p class="font-weight-bold">Semana</p>
+      <b-form-datepicker v-model="clase.Semana" size="sm" ></b-form-datepicker>
 
       <p class="font-weight-bold">Hora</p>
       <b-form-timepicker v-model="clase.horas"  size="sm" ></b-form-timepicker>
@@ -81,6 +84,7 @@ export default {
     return {
       timepicker:'',
       fecha:null,
+      semana:null,
       horas: null,
       tipo: null,
       cupos:null,

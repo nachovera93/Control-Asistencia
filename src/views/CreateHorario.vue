@@ -13,14 +13,14 @@
     <hr />
     <TablaHorarios />
     <br />
-    
+    <Historial />
     
   </div>
 </template>
 
 <script>
 import Horario from "../components/Horario.vue";
-//import TablaHorarios from "../components/TablaHorarios.vue";
+import Historial from "../components/Historial.vue";
 import TablaHorarios from "../components/TablaHorarios.vue";
 import { mapActions } from "vuex";
 const shortid = require("shortid");
@@ -33,8 +33,7 @@ export default {
   name: "CreateHorarios",
   components: {
     Horario,
-    //TablaHorarios,
-    TablaHorarios
+    TablaHorarios, Historial
   },
   data() {
     return {
@@ -46,6 +45,8 @@ export default {
         cupos: 0,
         espacio: 0,
         alumnos:[],
+        historial: false,
+        boton: false
       },
     };
   },
@@ -58,7 +59,7 @@ export default {
      
       this.clase.id = shortid.generate();
       this.PutHorario(this.clase);
-       console.log("tar1 :", this.clase)
+      // console.log("tar1 :", this.clase)
       //this.historialHorario(this.clase);
       //this.getClase(this.clase);
       this.clase = {
@@ -69,6 +70,8 @@ export default {
         cupos: 0,
         espacio: 0,
         alumnos:[],
+        historial: false,
+        boton: false
       };
     },
   },

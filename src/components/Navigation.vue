@@ -13,6 +13,7 @@
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
           <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'Alumnos' }">Alumnos</router-link>
+          <router-link v-if="admin" class="link" :to="{ name: 'HistorialHorarios' }">Historial</router-link>
        <!--   <router-link v-if="admin" class="link" :to="{ name: 'Avances' }">Avances</router-link> -->
           <router-link v-if="user" class="link"
                            :to="{

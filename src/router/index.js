@@ -16,6 +16,7 @@ import Horarios from "../views/Horarios.vue";
 import EditarClase from "../views/EditarClase.vue";
 import Avances from "../views/Avances.vue";
 import Alumnos from "../views/Alumnos.vue";
+import HistorialHorarios from "../views/HistorialHorarios.vue";
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -120,6 +121,16 @@ const routes = [
     component: CreateHorario,
     meta: {
       title: "Crear Horario",
+      requiresAuth: true,
+      requiresAdmin: true,
+    },
+  },
+   {
+    path: "/historial-horario",
+    name: "HistorialHorarios",
+    component: HistorialHorarios,
+    meta: {
+      title: "Historial Horarios",
       requiresAuth: true,
       requiresAdmin: true,
     },

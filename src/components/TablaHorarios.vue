@@ -1,6 +1,6 @@
 <template>
      <div>
-    
+     <H3>Horarios Semana</H3>
     <table class="table">
         <thead>
             <tr>
@@ -8,19 +8,25 @@
                 <th scope="col">Clase</th>
                 <th scope="col">Horario</th>
                 <th scope="col">Cupos </th>
+                <th v-if="profileAdmin" scope="col">Alumnos </th>
                 <th scope="col">Tomar Clase</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in horarios" :key="item.id">
+            <tr v-for="item in Horarios" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
+                <td v-if="profileAdmin" >
+                   <li v-for="element in item.alumnos" :key="element.id">
+                     {{element.name}} {{element.apellido}}
+                   </li>
+                </td> 
                 <td>
-                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast , espacio: item.espacio})" v-if="!clase.boton"> Asistir </button>
-                        <button  @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast, espacio: item.espacio })" v-else> No Asistir </button>
-                        
+                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast , espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </button>
+                  <!--      <button  @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast, espacio: item.espacio })" v-else> no asistir </button>
+                       </tr>--> 
                 </td>
                 <td v-if="profileAdmin">
                         <button @click="deleteHorario(item.id)"> Eliminar </button>
@@ -37,31 +43,45 @@
                           Editar
                         </router-link>
                 </td>
+                <td>
+                     <button @click="AddToHistorial(item)">A Historial</button>
+                </td>
             </tr>
+          <!--   <tr>
+                <td  v-for="item in horarios" :key="item.id">
+                        <button @click="AddToHistorial(item)" >Hola</button>
+                       <button @click="deleteHorarioHistorial(item)" v-else>{{BotonHistorial}}</button>
+                        v-if="!item.botonHistorial" v-else
+                 </td>
+             </tr>-->
         </tbody>
     </table>
    </div>
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
+import { mapActions} from 'vuex'
 export default {
-   // data () {
-   // return {
-   //   activada : this.boton
-   //   }
-   // },
-    created(){
-     this.getHorarioSemana(),
-     this.getBoton()
-     //console.log("item id:", this.horarios);
+
+    async created(){
+     try {
+      await this.$store.dispatch("getHorarioSemana");
+     } catch (error) {
+      console.error(error);
+     }
+     //this.getBoton()
     },
     computed:{
-     ...mapState(['horarios','clase','clase.boton']),
-   
-     profileAdmin() {
+     //...mapState(['clase','clase.boton','profileId']),
+      Horarios(){
+      return this.$store.getters.horariosNoHistorial;
+      },
+      HorarioNoTomado(){
+      return this.$store.getters.HorarioNoTomado;
+      },
+      profileAdmin() {
       return this.$store.state.profileAdmin;   
-         },
+       },
      profileUser(){
       return this.$store.state.profileId;  
          },
@@ -73,14 +93,12 @@ export default {
         }
     },
     methods:{
-      ...mapActions(['deleteHorario','getHorarioSemana','TomarClase','DescartarClase','getBoton']),
-     // cambiarEstado(){
-     // 
-     // this.activada = !this.activada;
-     // console.log("item idsss:", this.boton);
-    //},
+      ...mapActions(['deleteHorario','getPrivilegios','TomarClase','DescartarClase','getBoton']),  
       
-      
+      AddToHistorial(item) {
+      this.$store.dispatch("putHistorial", item);
+      }     
+     
     },
        
 }
